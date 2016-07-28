@@ -26,7 +26,9 @@ read customheader
 echo -e "\n(Optional) Enter the username for HTTP authentication:"
 read httpuser
 
-If [ -z "httpuser" ]; then
+if [ -z "$httpuser" ]; then
+    httpuser=""
+else
     echo -e "\nEnter the password for the user account:"
     read httppass
 fi
@@ -45,7 +47,7 @@ else
 fi
 
 # Cookie set
-if [ -z "$cookie"]; then
+if [ -z "$cookie" ]; then
     cookie=""
 else
     cookie="--http-cookie-string='"$cookie"'"
@@ -59,14 +61,14 @@ else
 fi
 
 # Request Queue
-if [ -z "$requestqueue"]; then
+if [ -z "$requestqueue" ]; then
     requestqueue="--http-request-queue-size='50'"
 else
     requestqueue="--http-request-queue-size='$requestqueue'"
 fi
 
 # Custom Header
-if [ -z "$customheader"]; then
+if [ -z "$customheader" ]; then
     customheader=""
 else
     customheader="--http-request-header='$customheader'"
@@ -76,5 +78,6 @@ if [ -z "httppass" ]; then
     httpauth=""
 else
     httpauth="--http-authentication-username='$httpuser' --http-authentication-password='$httppass'"
+fi
 
 echo -e "\n"arachni --output-verbose --scope-auto-redundant $httpauth --audit-links $customheader --audit-forms $concurrency $cookie $useragent --report-save-path=$outputfile $url --scope-exclude-pattern=logout $requestqueue
