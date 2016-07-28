@@ -1,1 +1,2 @@
-# arachni-cli-shortcut 
+# Arachni CLI Arg-String Generator
+This tool is used to simplify the use of arachni from the command-line for those that don't use arachni enough to memorise the commands (or for those lazy like I am). 
