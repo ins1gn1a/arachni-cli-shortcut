@@ -8,9 +8,6 @@ read url
 
 outputfile="$output.afr"
 
-echo -e "\nCookie String (Enter nothing for no auth): "
-read cookie
-
 echo -e "\nUser Agent (1=IE11, 2=Chrome, 3=Firefox, Blank for Arachni): "
 read useragent
 
@@ -19,6 +16,20 @@ read concurrency
 
 echo -e "\nHTTP Request Queue Size (Blank for default '50'): "
 read requestqueue
+
+echo -e "\n(Optional) Cookie String (Enter nothing for no auth): "
+read cookie
+
+echo -e "\n(Optional) Enter a custom header (can use multiple separated by ;). Example input: field_name=field value:"
+read customheader
+
+echo -e "\n(Optional) Enter the username for HTTP authentication:"
+read httpuser
+
+If [ -z "httpuser" ]; then
+    echo -e "\nEnter the password for the user account:"
+    read httppass
+fi
 
 # User Agent Set
 if [ -z "$useragent" ]; then
@@ -54,4 +65,16 @@ else
     requestqueue="--http-request-queue-size='$requestqueue'"
 fi
 
-echo -e "\n"arachni --output-verbose --scope-auto-redundant --audit-links --audit-forms $concurrency $cookie $useragent --report-save-path=$outputfile $url --scope-exclude-pattern=logout $requestqueue
+# Custom Header
+if [ -z "$customheader"]; then
+    customheader=""
+else
+    customheader="--http-request-header='$customheader'"
+fi
+
+if [ -z "httppass" ]; then
+    httpauth=""
+else
+    httpauth="--http-authentication-username='$httpuser' --http-authentication-password='$httppass'"
+
+echo -e "\n"arachni --output-verbose --scope-auto-redundant $httpauth --audit-links $customheader --audit-forms $concurrency $cookie $useragent --report-save-path=$outputfile $url --scope-exclude-pattern=logout $requestqueue
