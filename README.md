@@ -1,4 +1,6 @@
 # Arachni CLI Arg-String Generator
+![](https://img.shields.io/maintenance/yes/2016.svg)
+
 This tool is used to simplify the use of arachni from the command-line for those that don't use arachni enough to memorise the commands (or for those lazy like I am). 
 
 # Retrieve script
